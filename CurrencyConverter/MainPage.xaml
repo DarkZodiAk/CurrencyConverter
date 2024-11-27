@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:CurrencyConverter="clr-namespace:CurrencyConverter"
+             x:Class="CurrencyConverter.MainPage"
+             x:DataType="CurrencyConverter:CurrencyViewModel">
+
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto"
+          ColumnDefinitions="*, 300">
+
+        <DatePicker 
+            Grid.Row="0"
+            Grid.Column="1"
+            Date="{Binding SelectedDate}"
+            MinimumDate="2000-01-01"
+            MaximumDate="{Binding MaxDate}" />
+
+        <Label 
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="{Binding TooltipInfo}" />
+
+        <Picker 
+            Grid.Row="2"
+            Grid.Column="0"
+            Title="Выберите валюту" 
+            ItemsSource="{Binding Currencies}" 
+            SelectedItem="{Binding Currency1}"
+            ItemDisplayBinding="{Binding Name}"/>
+
+        <Picker 
+            Grid.Row="3"
+            Grid.Column="0"
+            Title="Выберите валюту" 
+            ItemsSource="{Binding Currencies}" 
+            SelectedItem="{Binding Currency2}"
+            ItemDisplayBinding="{Binding Name}"/>
+
+        <Entry 
+            Grid.Row="2"
+            Grid.Column="1"
+            Placeholder="Enter Value"
+            Text="{Binding Currency1Value}"/>
+
+        <Entry 
+            Grid.Row="3"
+            Grid.Column="1"
+            Placeholder="Converted Value"
+            Text="{Binding Currency2Value}"/>
+    </Grid>
+
+</ContentPage>
