@@ -7,7 +7,7 @@ using System.Xml.Linq;
 namespace CurrencyConverter {
 
     public class CurrencyApi {
-        public static ObservableCollection<CurrencyRate> GetCurrencyRates(DateTime date) {
+        public static Collection<CurrencyRate> GetCurrencyRates(DateTime date) {
             string BaseUrl = "https://cbr.ru/scripts/XML_daily.asp";
             string formattedDate = date.ToString("dd/MM/yyyy");
 
@@ -18,6 +18,10 @@ namespace CurrencyConverter {
                 try {
                     string xmlData = client.DownloadString(url);
                     var xml = XDocument.Parse(xmlData);
+
+                    if(xml == null) return new Collection<CurrencyRate> { };
+                    if(date != GetResponseDate(xml)) return new Collection<CurrencyRate> { };
+
                     var res = XmlToCurrencies(xml);
                     return res;
                 } catch (WebException ex) {
@@ -27,10 +31,13 @@ namespace CurrencyConverter {
             }
         }
 
-        public static ObservableCollection<CurrencyRate> XmlToCurrencies(XDocument? currencyRates) {
-            var result = new ObservableCollection<CurrencyRate> { RubRate };
-            
-            if(currencyRates == null) return result;
+        private static DateTime GetResponseDate(XDocument currencyRates) {
+            string date = (string)currencyRates.Root.Attribute("Date");
+            return DateTime.Parse(date);
+        }
+
+        private static Collection<CurrencyRate> XmlToCurrencies(XDocument currencyRates) {
+            var result = new Collection<CurrencyRate> { RubRate };
 
             var valutes = currencyRates.Descendants("Valute");
 

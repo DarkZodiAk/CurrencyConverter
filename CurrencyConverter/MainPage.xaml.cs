@@ -87,7 +87,6 @@ namespace CurrencyConverter {
                 }
             }
         }
-
         
         public DateTime MaxDate { get; } = DateTime.Today;
         public DateTime SelectedDate { 
@@ -121,9 +120,10 @@ namespace CurrencyConverter {
                 foreach (var item in CurrencyApi.GetCurrencyRates(date)) {
                     Currencies.Add(item);
                 };
-                if (code1 == null || code2 == null) break;
 
-                if (Currencies.All(x => x.NumCode != code1) && Currencies.All(x => x.NumCode != code2))
+                if (Currencies.Count < 2 || ((code1 != null && code2 != null) &&
+                    (Currencies.All(x => x.NumCode != code1) && Currencies.All(x => x.NumCode != code2)))
+                    )
                     date = date.AddDays(-1);
                 else break;
             }
